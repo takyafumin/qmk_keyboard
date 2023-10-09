@@ -1,0 +1,9 @@
+VIA_ENABLE = yes
+
+LTO_ENABLE = yes
+
+GRAVE_ESC_ENABLE = no
+
+MAGIC_ENABLE = no
+
+
