@@ -40,12 +40,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Automatic Mouse Layer
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
-#define AUTO_MOUSE_DEFAULT_LAYER 6
-#define AUTO_MOUSE_TIME 650 
-#define AUTO_MOUSE_DELAY 200
-
-
-
+#define AUTO_MOUSE_DEFAULT_LAYER 5
+#define AUTO_MOUSE_TIME 6000 
+#define AUTO_MOUSE_DELAY 100
 
 
 #undef LOCKING_SUPPORT_ENABLE

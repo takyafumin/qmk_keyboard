@@ -43,8 +43,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 5
 
+// #undef LOCKING_SUPPORT_ENABLE
+// #undef LOCKING_RESYNC_ENABLE
+// #undef NO_ACTION_ONESHOT
 
 
+
+
+// LED
 #undef RGBLIGHT_ANIMATIONS
 #undef RGBLIGHT_EFFECT_BREATHING
 #undef RGBLIGHT_EFFECT_RAINBOW_MOOD

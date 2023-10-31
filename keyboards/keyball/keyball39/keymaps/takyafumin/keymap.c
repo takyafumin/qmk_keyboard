@@ -22,67 +22,66 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum keymap_layer {
   LBASE = 0,
   LMARK = 1,
-  LNUM  = 2,
-  LEXT  = 3,
-  LEX2  = 4,
+  LNUM = 2,
+  LEXT = 3,
+  LCONF = 4,
   LBALL = 5,
-  LMS   = 6,
 };
 
 enum custom_keycodes {
-    MY_L1= SAFE_RANGE,
-    MY_L2,
-    MY_ESC,
-    MY_CTLA,
-    MY_SCRL,
-    MY_SPC,
+  MY_L1 = SAFE_RANGE,
+  MY_L2,
+  MY_CTLA,
+  MY_SCRL,
+  MY_TGCPI,
+  MY_TGCPU,
 };
 
 // --------------------
 // キーのalias
 // --------------------
-#define L1       KC_LNG1
-#define L2       KC_LNG2
-#define SPC      KC_SPC
-#define ESC      KC_ESC
-#define BS       KC_BSPC
+#define L1  KC_LNG1
+#define L2  KC_LNG2
+#define SPC KC_SPC
+#define ESC KC_ESC
+#define ENT KC_ENT
+#define BS  KC_BSPC
 
+// Control
+#define CTL_A   LCTL_T(KC_A)
+#define CTL_TAB LCTL_T(KC_TAB)
+#define CTL_SCN LCTL_T(KC_SCLN)
 
-#define CTL_A    LCTL_T(KC_A)
-#define CTL_TAB  LCTL_T(KC_TAB)
-#define CTL_SCN  LCTL_T(KC_SCLN)
-#define GUI_X    LGUI_T(KC_X)
-#define GUI_W    LGUI_T(KC_W)
-#define GUICOMM  LGUI_T(KC_COMM)
-#define ALT_C    RALT_T(KC_C)
-#define ALTSLSH  RALT_T(KC_SLSH)
-#define ALTDOT   RALT_T(KC_DOT)
-#define SFTDEL   LSFT_T(KC_DEL)
-#define SFTSPC   LSFT_T(KC_SPC)
-#define SFTENT   LSFT_T(KC_ENT)
-#define SFTBS    LSFT_T(KC_BSPC)
-#define SFTESC   LSFT_T(KC_ESC)
-#define SFT_L1   LSFT_T(L1)
-#define SFTSLSH  RSFT_T(KC_SLSH)
-#define SFTZ     RSFT_T(KC_Z)
+// GUI
+#define GUI_W   LGUI_T(KC_W)
+#define GUI_DOT LGUI_T(KC_DOT)
 
+// ALT
+#define ALT_E  RALT_T(KC_E)
+#define ALT_L  RALT_T(KC_L)
+#define ALT_K  RALT_T(KC_K)
+#define ALT_CM RALT_T(KC_COMM)
 
-#define F_MARK   LT(LMARK, KC_F)
-#define J_MARK   LT(LMARK, KC_J)
-#define ESCBALL  LT(LBALL, KC_ESC)
-#define ESCLEXT  LT(LEXT, KC_ESC)
-#define ESCNUM   LT(LNUM, KC_ESC)
-#define V_NUM    LT(LNUM, KC_V)
-#define M_NUM    LT(LNUM, KC_M)
-#define S_NUMS   LT(LNUM, KC_S)
-#define L_NUMS   LT(LNUM, KC_L)
-#define SPCLEXT  LT(LEXT, SPC)
-#define L1_LEXT  LT(LEX2, L1)
-#define L2_LEXT  LT(LEXT, L2)
-#define L1_LBALL LT(LBALL, L1)
-#define L2_LBALL LT(LBALL, L2)
-#define ENT_LEX2 LT(LEX2, KC_ENT)
+// Shift
+#define SF_J    LSFT_T(KC_J)
+#define SF_F    LSFT_T(KC_F)
+#define SF_Z    LSFT_T(KC_Z)
+#define SF_SL   LSFT_T(KC_SLSH)
+#define SF_QUOT LSFT_T(KC_QUOT)
+#define SF_GRV  LSFT_T(KC_GRV)
+#define SFTDEL  LSFT_T(KC_DEL)
+#define SFTSPC  LSFT_T(KC_SPC)
+#define SFTENT  LSFT_T(KC_ENT)
+#define SFTBS   LSFT_T(KC_BSPC)
+#define SF_RPRN LSFT_T(KC_RPRN)
+#define SF_DOWN LSFT_T(KC_DOWN)
 
+// Layer
+#define F_MARK  LT(LMARK, KC_F)
+#define J_MARK  LT(LMARK, KC_J)
+#define V_MARK  LT(LMARK, KC_V)
+#define M_MARK  LT(LMARK, KC_M)
+#define ESCLEXT LT(LEXT, KC_ESC)
 
 #include "quantum.h"
 
@@ -91,50 +90,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [LBASE] = LAYOUT_universal(
     KC_Q     , GUI_W    , KC_E     , KC_R     , KC_T      ,                           KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
-    CTL_A    , KC_S     , KC_D     , F_MARK   , KC_G      ,                           KC_H     , J_MARK   , KC_K     , KC_L     , CTL_SCN  ,
-    SFTZ     , GUI_X    , ALT_C    , V_NUM    , KC_B      ,                           KC_N     , M_NUM    , KC_COMM  , ALTDOT   , SFTSLSH  ,
-    MY_SCRL  , XXXXXXX  , XXXXXXX  , KC_ESC   , MY_SPC    , MY_L2    ,     MY_L1    , SFTENT   , XXXXXXX  , XXXXXXX  , XXXXXXX  , MO(LBALL)
+    CTL_A    , KC_S     , KC_D     , SF_F     , KC_G      ,                           KC_H     , SF_J     , ALT_K    , ALT_L    , CTL_SCN  ,
+    SF_Z     , KC_X     , KC_C     , KC_V     , KC_B      ,                           KC_N     , KC_M     , ALT_CM   , GUI_DOT  , SF_SL    ,
+    MY_SCRL  , TG(LCONF), TG(LNUM) , ESCLEXT  , MY_L2     , SFTSPC   ,     ENT      , MY_L1    , XXXXXXX  , XXXXXXX  , XXXXXXX  , TG(LBALL)
   ),
 
   [LMARK] = LAYOUT_universal(
     KC_EXLM  , KC_AT    , KC_HASH  , KC_DLR   , KC_PERC   ,                           KC_CIRC  , KC_AMPR  , KC_ASTR  , KC_EQL   ,  KC_MINS  ,
-    _______  , KC_LBRC  , KC_TILD  , KC_RBRC  , KC_PIPE   ,                           XXXXXXX  , KC_LPRN  , KC_QUOT  , KC_RPRN  ,  KC_COLN  ,
-    _______  , KC_LCBR  , KC_GRV   , KC_RCBR  , KC_BSLS   ,                           XXXXXXX  , KC_DQT   , KC_LT    , KC_GT    ,  KC_QUES  ,
-    _______  , _______  , _______  , _______  , KC_LSFT   , _______  ,     _______  , KC_RSFT  , _______  , _______  , _______  ,  _______
+    CTL_TAB  , KC_LPRN  , _______  , SF_RPRN  , KC_BTN1   ,                           KC_LEFT  , SF_DOWN  , KC_UP    , KC_RGHT  ,  KC_COLN  ,
+    KC_GRV   , KC_LBRC  , _______  , KC_RBRC  , KC_BTN2   ,                           KC_BSLS  , KC_QUOT  , KC_LT    , KC_GT    ,  S(KC_SLSH),
+    KC_DEL   , _______  , _______  , KC_DEL   , KC_LSFT   , KC_BTN4  ,     BS       , KC_RSFT  , _______  , _______  , _______  ,  _______
   ),
+
+  // [LMARK] = LAYOUT_universal(
+  //   KC_EXLM  , KC_AT    , KC_HASH  , KC_DLR   , KC_PERC   ,                           KC_CIRC  , KC_AMPR  , KC_ASTR  , KC_EQL   ,  KC_MINS  ,
+  //   CTL_TAB  , KC_LBRC  , SF_GRV   , KC_RBRC  , _______   ,                           KC_DQUO  , KC_LPRN  , SF_QUOT  , KC_RPRN  ,  KC_COLN  ,
+  //   SF_Z     , KC_LCBR  , KC_TILD  , KC_RCBR  , _______   ,                           KC_BSLS  , KC_PIPE  , KC_LT    , KC_GT    ,  S(KC_SLSH),
+  //   KC_DEL   , _______  , _______  , KC_DEL   , KC_LSFT   , _______  ,     SFTBS    , KC_RSFT  , _______  , _______  , _______  ,  _______
+  // ),
 
   [LNUM] = LAYOUT_universal(
     KC_1     , KC_2     , KC_3     , KC_4     , KC_5      ,                           KC_6     , KC_7     , KC_8     , KC_9     ,  KC_MINS  ,
     KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5     ,                           KC_DOT   , KC_4     , KC_5     , KC_6     ,  KC_COLN  ,
     KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10    ,                           KC_COMM  , KC_1     , KC_2     , KC_3     ,  KC_SLSH  ,
-    _______  , _______  , _______  , _______  , KC_F11    , KC_F12   ,     KC_0     , KC_0     , _______  , _______  , _______  ,  _______
+    KC_F12   , KC_F11   , _______  , KC_DEL   , KC_0      , _______  ,     _______  , KC_0     , _______  , _______  , _______  ,  _______
   ),
 
   [LEXT] = LAYOUT_universal(
-    KC_ESC   , KC_LGUI  , EE_CLR   , QK_BOOT  ,  QK_RBT   ,                           KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   ,  KC_PSCR  ,
-    CTL_TAB  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  _______  ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  ,  KC_ENT   ,
-    _______  , _______  , _______  , L2       ,  MY_CTLA  ,                           _______  , L1       , _______  , KC_APP   ,  _______  ,
-    _______  , _______  , _______  , _______  ,  _______  , SFTDEL   ,     BS       , _______  , _______  , _______  , _______  ,  _______
+    KC_ESC   , KC_LGUI  , KC_WH_U  , EE_CLR   ,  _______  ,                           KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   ,  KC_PSCR  ,
+    CTL_TAB  , KC_BTN2  , KC_WH_D  , KC_BTN1  ,  _______  ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  ,  KC_ENT   ,
+    MY_CTLA  , _______  , _______  , _______  ,  QK_BOOT  ,                           _______  , _______  , _______  , KC_APP   ,  _______  ,
+    _______  , _______  , _______  , _______  ,  _______  , SFTDEL   ,     SFTBS    , _______  , _______  , _______  , _______  ,  _______
   ),
 
-  [LEX2] = LAYOUT_universal(
-    KC_ESC   , KC_LGUI  , EE_CLR   , QK_BOOT  ,  QK_RBT   ,                           _______  , _______  , _______  , _______  ,  KC_PSCR  ,
-    CTL_TAB  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  _______  ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  ,  _______  ,
-    _______  , _______  , _______  , MY_CTLA  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , _______  , _______  , _______  ,  _______  , SFTDEL   ,     BS       , _______  , _______  , _______  , _______  ,  _______
+  [LCONF] = LAYOUT_universal(
+    RGB_TOG  , _______  , DT_UP    , DT_DOWN  ,  DT_PRNT  ,                           _______  , _______  , _______  , _______  , _______ ,
+    _______  , _______  , _______  , _______  ,  SCRL_DVI ,                           _______  , _______  , _______  , _______  , RGB_M_TW ,
+    _______  , _______  , _______  , _______  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
+    _______  , _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______  , _______
   ),
 
   [LBALL] = LAYOUT_universal(
-    RGB_TOG  , _______  , DT_UP    , DT_DOWN  ,  DT_PRNT  ,                           RGB_M_P  , RGB_M_B  , RGB_M_R  , RGB_M_SW , RGB_M_SN ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  ,  SCRL_DVI ,                           RGB_M_K  , RGB_M_X  , RGB_M_G  , RGB_M_T  , RGB_M_TW ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
-    QK_BOOT  , KBC_RST  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , KBC_RST  , QK_BOOT
-  ),
-
-  [LMS] = LAYOUT_universal(
-    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , _______  , _______  , _______  ,  _______  ,                           KC_BTN4  , KC_BTN1  , KC_BTN2  , _______  ,  _______  ,
+    _______  , _______  , KC_WH_U  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
+    _______  , KC_BTN2  , KC_WH_D  , KC_BTN1  ,  _______  ,                           KC_BTN4  , _______  , _______  , _______  ,  _______  ,
+    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , MY_TGCPI , MY_TGCPU , _______  ,  _______  ,
     _______  , _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______  ,  _______
   ),
 
@@ -147,99 +146,130 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//     // Auto enable scroll mode when the highest layer is 3
-//     keyball_set_scroll_mode(get_highest_layer(state) == LBALL);
-//     return state;
-// }
+// auto mouse feature
 void pointing_device_init_user(void) {
-    // set_auto_mouse_layer(LMS); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+  // always required before the auto mouse feature will work
+  set_auto_mouse_enable(true);
 }
-
 #ifdef OLED_ENABLE
 
-#    include "lib/oledkit/oledkit.h"
+#include "lib/oledkit/oledkit.h"
 
 void oledkit_render_info_user(void) {
-    keyball_oled_render_keyinfo();
-    keyball_oled_render_ballinfo();
-    keyball_oled_render_layerinfo();
+  keyball_oled_render_keyinfo();
+  keyball_oled_render_ballinfo();
+  keyball_oled_render_layerinfo();
 }
 #endif
 
-
 static struct {
-    uint16_t keycode;
-    uint16_t time;
+  uint16_t keycode;
+  uint16_t time;
 } last_pressed = {0, 0};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    bool in_tapping_term = (record->event.time - last_pressed.time) <= TAPPING_TERM;
+  bool in_tapping_term =
+      (record->event.time - last_pressed.time) <= TAPPING_TERM;
 
-    switch (keycode) {
-        case MY_SPC:
-            if (record->event.pressed) {
-               last_pressed.keycode = keycode;
-               last_pressed.time = record->event.time;
-               layer_on(LEXT);
-           } else {
-               layer_off(LEXT);
-               if (in_tapping_term) {
-                   tap_code(KC_SPC);
-               }
-           }
-           return false;
-           break;
+  switch (keycode) {
 
-        case MY_L2:
-            if (record->event.pressed) {
-               last_pressed.keycode = keycode;
-               last_pressed.time = record->event.time;
-               layer_on(LEXT);
-           } else {
-               layer_off(LEXT);
-               if (in_tapping_term) {
-                   tap_code(KC_LNG2);
-               }
-           }
-           return false;
-           break;
-
-        case MY_L1:
-           if (record->event.pressed) {
-               last_pressed.keycode = keycode;
-               last_pressed.time = record->event.time;
-               layer_on(LEX2);
-           } else {
-               layer_off(LEX2);
-               if (in_tapping_term) {
-                   tap_code(KC_LNG1);
-               }
-           }
-           return false;
-           break;
-
-        case MY_CTLA:
-           if (record->event.pressed) {
-               register_code(KC_RCTL);
-               tap_code(KC_A);
-           } else {
-               unregister_code(KC_RCTL);
-           }
-           return false;
-           break;
-
-        case MY_SCRL:
-           if (record->event.pressed) {
-                keyball_set_scroll_mode(true);
-           } else {
-                keyball_set_scroll_mode(false);
-           }
-           return false;
-           break;
+  case MY_L2:
+    if (record->event.pressed) {
+      last_pressed.keycode = keycode;
+      last_pressed.time = record->event.time;
+      layer_on(LMARK);
+    } else {
+      layer_off(LMARK);
+      if (in_tapping_term) {
+        tap_code(KC_LNG2);
+      }
     }
+    return false;
+    break;
 
-    // set_keylog(keycode, record);
-    return true;
+  case MY_L1:
+    if (record->event.pressed) {
+      last_pressed.keycode = keycode;
+      last_pressed.time = record->event.time;
+      layer_on(LNUM);
+    } else {
+      layer_off(LNUM);
+      if (in_tapping_term) {
+        tap_code(KC_LNG1);
+      }
+    }
+    return false;
+    break;
+
+  case MY_CTLA:
+    if (record->event.pressed) {
+      register_code(KC_RCTL);
+      tap_code(KC_A);
+    } else {
+      unregister_code(KC_RCTL);
+    }
+    return false;
+    break;
+
+  case MY_SCRL:
+    if (record->event.pressed) {
+      keyball_set_scroll_mode(true);
+    } else {
+      keyball_set_scroll_mode(false);
+      layer_move(LBASE);
+    }
+    return false;
+    break;
+
+  case MY_TGCPI:
+    if (record->event.pressed) {
+      last_pressed.keycode = keycode;
+      last_pressed.time = record->event.time;
+    } else {
+      if (in_tapping_term) {
+        pointing_device_set_cpi(1);
+      }
+    }
+    return false;
+    break;
+
+  case MY_TGCPU:
+    if (record->event.pressed) {
+      last_pressed.keycode = keycode;
+      last_pressed.time = record->event.time;
+    } else {
+      if (in_tapping_term) {
+        pointing_device_set_cpi(5);
+      }
+    }
+    return false;
+    break;
+  }
+
+  // set_keylog(keycode, record);
+  return true;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+
+  uint8_t layer = biton32(state);
+  switch (layer) {
+  case LBASE:
+    rgblight_sethsv(HSV_OFF);
+    break;
+  case LEXT:
+    rgblight_sethsv(HSV_CYAN);
+    break;
+    case LMARK:
+    rgblight_sethsv(HSV_BLUE);
+    break;
+  case LNUM:
+    rgblight_sethsv(HSV_GREEN);
+    break;
+  case LBALL:
+    rgblight_sethsv(HSV_PURPLE);
+    break;
+  }
+
+  return state;
 }
