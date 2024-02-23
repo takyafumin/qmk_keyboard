@@ -60,6 +60,7 @@ enum custom_keycodes {
 #define ALT_E  RALT_T(KC_E)
 #define ALT_L  RALT_T(KC_L)
 #define ALT_K  RALT_T(KC_K)
+#define ALT_D  RALT_T(KC_D)
 #define ALT_CM RALT_T(KC_COMM)
 
 // Shift
@@ -77,8 +78,8 @@ enum custom_keycodes {
 #define SF_DOWN LSFT_T(KC_DOWN)
 
 // Layer
-#define F_MARK  LT(LMARK, KC_F)
-#define J_MARK  LT(LMARK, KC_J)
+#define MARK_F  LT(LMARK, KC_F)
+#define MARK_J  LT(LMARK, KC_J)
 #define V_MARK  LT(LMARK, KC_V)
 #define M_MARK  LT(LMARK, KC_M)
 #define ESCLEXT LT(LEXT, KC_ESC)
@@ -90,24 +91,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [LBASE] = LAYOUT_universal(
     KC_Q     , GUI_W    , KC_E     , KC_R     , KC_T      ,                           KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
-    CTL_A    , KC_S     , KC_D     , SF_F     , KC_G      ,                           KC_H     , SF_J     , ALT_K    , ALT_L    , CTL_SCN  ,
+    CTL_A    , KC_S     , ALT_D    , MARK_F   , KC_G      ,                           KC_H     , MARK_J   , ALT_K    , KC_L     , CTL_SCN  ,
     SF_Z     , KC_X     , KC_C     , KC_V     , KC_B      ,                           KC_N     , KC_M     , ALT_CM   , GUI_DOT  , SF_SL    ,
-    MY_SCRL  , TG(LCONF), TG(LNUM) , ESCLEXT  , MY_L2     , SFTSPC   ,     ENT      , MY_L1    , XXXXXXX  , XXXXXXX  , XXXXXXX  , TG(LBALL)
+    MY_SCRL  , TG(LCONF), TG(LNUM) , ESCLEXT  , MY_L2     , SFTSPC   ,     SFTENT   , MY_L1    , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_TAB
   ),
 
   [LMARK] = LAYOUT_universal(
     KC_EXLM  , KC_AT    , KC_HASH  , KC_DLR   , KC_PERC   ,                           KC_CIRC  , KC_AMPR  , KC_ASTR  , KC_EQL   ,  KC_MINS  ,
-    CTL_TAB  , KC_LPRN  , _______  , SF_RPRN  , KC_BTN1   ,                           KC_LEFT  , SF_DOWN  , KC_UP    , KC_RGHT  ,  KC_COLN  ,
-    KC_GRV   , KC_LBRC  , _______  , KC_RBRC  , KC_BTN2   ,                           KC_BSLS  , KC_QUOT  , KC_LT    , KC_GT    ,  S(KC_SLSH),
+    CTL_TAB  , KC_LPRN  , _______  , KC_RPRN  , KC_BTN1   ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  ,  KC_QUOT  ,
+    KC_RSFT  , KC_LBRC  , _______  , KC_RBRC  , KC_BTN2   ,                           KC_BSLS  , KC_GRV   , KC_LT    , KC_GT    ,  KC_LSFT  ,
     KC_DEL   , _______  , _______  , KC_DEL   , KC_LSFT   , KC_BTN4  ,     BS       , KC_RSFT  , _______  , _______  , _______  ,  _______
   ),
-
-  // [LMARK] = LAYOUT_universal(
-  //   KC_EXLM  , KC_AT    , KC_HASH  , KC_DLR   , KC_PERC   ,                           KC_CIRC  , KC_AMPR  , KC_ASTR  , KC_EQL   ,  KC_MINS  ,
-  //   CTL_TAB  , KC_LBRC  , SF_GRV   , KC_RBRC  , _______   ,                           KC_DQUO  , KC_LPRN  , SF_QUOT  , KC_RPRN  ,  KC_COLN  ,
-  //   SF_Z     , KC_LCBR  , KC_TILD  , KC_RCBR  , _______   ,                           KC_BSLS  , KC_PIPE  , KC_LT    , KC_GT    ,  S(KC_SLSH),
-  //   KC_DEL   , _______  , _______  , KC_DEL   , KC_LSFT   , _______  ,     SFTBS    , KC_RSFT  , _______  , _______  , _______  ,  _______
-  // ),
 
   [LNUM] = LAYOUT_universal(
     KC_1     , KC_2     , KC_3     , KC_4     , KC_5      ,                           KC_6     , KC_7     , KC_8     , KC_9     ,  KC_MINS  ,
@@ -132,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [LBALL] = LAYOUT_universal(
     _______  , _______  , KC_WH_U  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , KC_BTN2  , KC_WH_D  , KC_BTN1  ,  _______  ,                           KC_BTN4  , _______  , _______  , _______  ,  _______  ,
+    _______  , KC_BTN2  , KC_WH_D  , KC_BTN1  ,  _______  ,                           KC_BTN4  , MY_TGCPI , MY_TGCPU , _______  ,  _______  ,
     _______  , _______  , _______  , _______  ,  _______  ,                           _______  , MY_TGCPI , MY_TGCPU , _______  ,  _______  ,
     _______  , _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______  ,  _______
   ),
