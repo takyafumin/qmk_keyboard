@@ -31,22 +31,6 @@ enum custom_keycodes {
     MY_L2
 };
 
-// // --------------------
-// // custom keyterms
-// // --------------------
-// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-//   switch (keycode) {
-//     case LCTL_T(KC_A):
-//       return TAPPING_TERM + 20;
-//
-//     case RCTL_T(KC_SCLN):
-//       return TAPPING_TERM + 20;
-//
-//     default:
-//       return TAPPING_TERM;
-//   }
-// }
-
 // --------------------
 // キーのalias
 // --------------------
@@ -82,6 +66,22 @@ enum custom_keycodes {
 #define ADJUST   MO(_EXT1)
 #define G_EN     LGUI_T(L2)
 #define A_JP     RALT_T(L1)
+
+// --------------------
+// custom keyterms
+// --------------------
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+
+    case CTLA:
+    case S_S:
+    case S_D:
+      return TAPPING_TERM + 30;
+
+    default:
+      return TAPPING_TERM;
+  }
+}
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
