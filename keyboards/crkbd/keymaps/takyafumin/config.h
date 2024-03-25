@@ -42,8 +42,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 //#define QUICK_TAP_TERM 0
 // TAPからHOLDに移行するまでの時間を設定します。デフォルトは200msです。
-#define TAPPING_TERM 180
+#define TAPPING_TERM 170
 #define TAPPING_TERM_PER_KEY
 #define LAYER_STATE_16BIT
-#define DYNAMIC_KEYMAP_LAYER_COUNT 8
+#define DYNAMIC_KEYMAP_LAYER_COUNT 4
 
