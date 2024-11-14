@@ -30,8 +30,8 @@ enum keymap_layer {
 
 enum custom_keycodes {
     MAC_PRSC = SAFE_RANGE,
-    MN_JP,
-    MN_EN,
+    // MN_JP,
+    // MN_EN,
     MY_SCRL,
 };
 
@@ -104,7 +104,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   }
 }
 
-// #include "quantum.h"
+// 現在のレイヤー番号を保持する変数
+uint8_t current_layer = 0;  
+// 変更前のレイヤー番号を保持する変数
+uint8_t previous_layer = 0;
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -115,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CTL_A    , GUI_S    , ALT_D    , SFT_F    , KC_G      ,                           KC_H     , SFT_J    , ALT_K    , GUI_L    , CTLSCN   ,
     KC_Z     , KC_X     , KC_C     , KC_V     , KC_B      ,                           KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  ,
     //|---------------------------------------------------.                         ,------------------------------------------------------.
-    BALL     , TG(NUMS) , XXXXXXX  , GUIESC   , MN_EN     , S_SPC    ,     S_ENT    , MN_JP    , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_TAB
+    BALL     , TG(NUMS) , MY_SCRL  , GUIESC   , LT_EN     , S_SPC    ,     S_ENT    , RT_JP    , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_TAB
   ),
 
   [_LEFT] = LAYOUT_universal(
@@ -147,20 +150,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NUMS] = LAYOUT_universal(
     //|---------------------------------------------------.                         ,------------------------------------------------------.
-    RGB_TOG  , _______  , DT_UP    , DT_DOWN  ,  DT_PRNT  ,                           _______  , _______  , _______  , _______  , _______ ,
-    _______  , _______  , _______  , _______  ,  SCRL_DVI ,                           _______  , _______  , _______  , _______  , RGB_M_TW ,
-    _______  , _______  , _______  , _______  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
+    RGB_TOG  , _______  , DT_UP    , DT_DOWN  ,  DT_PRNT  ,                           _______  , SCRL_DVD , SCRL_DVI , _______  , _______ ,
+    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  , RGB_M_TW ,
+    _______  , _______  , _______  , _______  ,  _______  ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
     //|---------------------------------------------------.                         ,------------------------------------------------------.
     _______  , _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______  , _______
   ),
 
   [_LBALL] = LAYOUT_universal(
     //|---------------------------------------------------.                         ,------------------------------------------------------.
-    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  KC_BTN5  ,                           KC_WH_L  , KC_WH_D  , KC_WH_U  , KC_WH_R  ,  _______  ,
+    RGB_TOG  , _______  , _______  , _______  ,  _______  ,                           _______  , SCRL_DVD , SCRL_DVI , _______  ,  _______  ,
+    KC_LCTL  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  KC_BTN5  ,                           KC_WH_R  , KC_WH_U  , KC_WH_D  , KC_WH_L  , KC_LCTL   ,
     _______  , _______  , KC_BTN4  , KC_BTN5  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE  ,
     //|---------------------------------------------------.                         ,------------------------------------------------------.
     _______  , _______  , _______  , _______  ,  MY_SCRL  , _______  ,     _______  , _______  , _______  , _______  , _______  ,  _______
+    // _______  , _______  , _______  , _______  ,  SCRL_MO  , _______  ,     _______  , _______  , _______  , _______  , _______  ,  _______
   ),
 
   // [5] = LAYOUT_universal(
@@ -172,11 +176,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// auto mouse feature
-void pointing_device_init_user(void) {
-  // always required before the auto mouse feature will work
-  set_auto_mouse_enable(true);
-}
 #ifdef OLED_ENABLE
 
 #include "lib/oledkit/oledkit.h"
@@ -188,62 +187,6 @@ void oledkit_render_info_user(void) {
 }
 #endif
 
-typedef struct {
-    bool pressed;
-    uint16_t time;
-    bool tap;
-    bool double_tap;
-    uint16_t active_keycode;
-    uint16_t prev_active_keycode;
-} key_state_t;
-
-static key_state_t lower_key = {false, 0, false, false, KC_NO, KC_NO}; // 初期状態は無効なキーコード
-static key_state_t raise_key = {false, 0, false, false, KC_NO, KC_NO}; // 初期状態は無効なキーコード
-                                                                       //
-void handle_key_press(key_state_t *key_state, uint16_t event_time, uint16_t current_keycode) {
-    if (!key_state->pressed) {
-        // 初回のキー押下
-        key_state->time = event_time;
-        key_state->pressed = true;
-        key_state->tap = true;
-        key_state->prev_active_keycode = key_state->active_keycode; // 現在の状態を保存
-        key_state->active_keycode = current_keycode; // 現在のキーコードを更新
-    } else if (key_state->pressed && (TIMER_DIFF_16(event_time, key_state->time) <= TAPPING_TERM)) {
-        // ダブルタップの2回目の押下
-        key_state->pressed = false;
-        key_state->double_tap = true;
-        key_state->tap = false;
-    } else {
-        // 長押しの開始
-        key_state->time = event_time;
-        key_state->pressed = true;
-        key_state->tap = true;
-        key_state->prev_active_keycode = key_state->active_keycode; // 現在の状態を保存
-        key_state->active_keycode = current_keycode; // 現在のキーコードを更新
-    }
-}
-
-void handle_key_release(key_state_t *key_state, uint16_t event_time, uint16_t tap_keycode, uint8_t layer) {
-    if (key_state->tap && (TIMER_DIFF_16(event_time, key_state->time) <= TAPPING_TERM)) {
-        // タップ時の処理
-        tap_code(tap_keycode);
-        key_state->prev_active_keycode = key_state->active_keycode; // 前の状態を更新
-        key_state->active_keycode = tap_keycode;
-        key_state->tap = false;
-    } else if (key_state->double_tap && (TIMER_DIFF_16(event_time, key_state->time) <= TAPPING_TERM)) {
-        // ダブルタップ時の処理
-        key_state->double_tap = false;
-        // タップ前の状態に戻す
-        if (key_state->prev_active_keycode != tap_keycode) {
-            tap_code(key_state->prev_active_keycode);
-            key_state->active_keycode = key_state->prev_active_keycode;
-        }
-    }
-    // キーが離されたときの共通処理
-    key_state->pressed = false;
-    layer_off(layer); // レイヤーを無効にする
-}
-
 // --------------------
 // クリック時イベント
 // --------------------
@@ -252,24 +195,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool lctrl = keyboard_report->mods & MOD_BIT(KC_LCTL);
 
     switch (keycode) {
-
-        case MN_EN:
-            if (record->event.pressed) {
-                handle_key_press(&lower_key, record->event.time, EN);
-                layer_on(_LEFT); // レイヤーを有効にする
-            } else {
-                handle_key_release(&lower_key, record->event.time, EN, _LEFT);
-            }
-            return false;
-
-        case MN_JP:
-            if (record->event.pressed) {
-                handle_key_press(&raise_key, record->event.time, JP);
-                layer_on(_RIGHT); // レイヤーを有効にする
-            } else {
-                handle_key_release(&raise_key, record->event.time, JP, _RIGHT);
-            }
-            return false;
 
         // Ctrl + j = Enter
         case SFT_J:
@@ -312,7 +237,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             keyball_set_scroll_mode(true);
           } else {
             keyball_set_scroll_mode(false);
-            layer_move(_BASE);
           }
           return false;
           break;
@@ -322,24 +246,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+  // 現在のレイヤーを変更前のレイヤーとして保持
+  previous_layer = current_layer;
 
-  uint8_t layer = biton32(state);
-  switch (layer) {
-  case _BASE:
-    rgblight_sethsv(HSV_OFF);
-    break;
-  case _LEFT:
-    rgblight_sethsv(HSV_CYAN);
-    break;
+  // 現在のレイヤーを更新
+  current_layer = biton32(state);
+
+  switch (current_layer) {
+    case _BASE:
+      rgblight_sethsv(HSV_OFF);
+      break;
+    case _LEFT:
+      rgblight_sethsv(HSV_CYAN);
+      break;
     case _RIGHT:
-    rgblight_sethsv(HSV_BLUE);
-    break;
-  case _NUMS:
-    rgblight_sethsv(HSV_GREEN);
-    break;
-  case _LBALL:
-    rgblight_sethsv(HSV_PURPLE);
-    break;
+      rgblight_sethsv(HSV_BLUE);
+      break;
+    case _EXTRA:
+      rgblight_sethsv(HSV_GREEN);
+      break;
+    case _NUMS:
+      rgblight_sethsv(HSV_GREEN);
+      break;
+    case _LBALL:
+      rgblight_sethsv(HSV_PURPLE);
+      break;
   }
 
   return state;
