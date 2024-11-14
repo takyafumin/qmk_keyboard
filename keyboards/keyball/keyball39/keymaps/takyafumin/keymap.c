@@ -53,42 +53,38 @@ enum custom_keycodes {
 #define S_SPC    LSFT_T(SPC)
 #define S_ENT    LSFT_T(ENT)
 #define S_BS     LSFT_T(BS)
-#define GUITAB   LGUI_T(TAB)
 #define GUIESC   LGUI_T(ESC)
+
 // home mod key left
 #define SFT_F    LSFT_T(KC_F)
 #define ALT_D    RALT_T(KC_D)
 #define GUI_S    LGUI_T(KC_S)
 #define CTL_A    LCTL_T(KC_A)
-#define SFT_Z    LSFT_T(KC_Z)
-#define SFTQUOT  LSFT_T(KC_QUOT)
-#define CTLQUOT  LCTL_T(KC_QUOT)
 
 // home mod key right
 #define SFT_J    LSFT_T(KC_J)
 #define ALT_K    RALT_T(KC_K)
 #define GUI_L    LGUI_T(KC_L)
-#define SFT_DN   LSFT_T(KC_DOWN)
-#define ALT_UP   RALT_T(KC_UP)
-#define GUI_RT   LGUI_T(KC_RIGHT)
 #define CTLSCN   RCTL_T(KC_SCLN)
-#define SFTSLS   LSFT_T(KC_SLSH)
-#define SFTLBRC  LSFT_T(KC_LBRC)
-#define ALTRBRC  RALT_T(KC_RBRC)
-#define SFTRBRC  LSFT_T(KC_RBRC)
-#define ALTLBRC  RALT_T(KC_LBRC)
 
 // Layer
 #define LEFT     MO(_LEFT)
-#define LFT_V    LT(_LEFT, KC_V)
 #define RIGHT    MO(_RIGHT)
 #define EXTRA    MO(_EXTRA)
-#define EXT_0    LT(_EXTRA, KC_0)
-#define EXTMINS  LT(_EXTRA, KC_MINS)
 #define NUMS     MO(_NUMS)
 #define LT_EN    LT(LEFT, EN)
 #define RT_JP    LT(RIGHT, JP)
 #define BALL     MO(_LBALL)
+#define EXT_0    LT(EXTRA, KC_0)
+#define EXTMINS  LT(EXTRA, KC_MINS)
+
+// OSM/OSL
+#define TO_BASE  TO(_BASE)
+#define TO_EXT   TO(_EXTRA)
+#define OSM_SFT  OSM(MOD_LSFT)
+#define OSM_CTL  OSM(MOD_LCTL)
+#define OSM_ALT  OSM(MOD_LALT)
+#define OSM_GUI  OSM(MOD_LGUI)
 
 // --------------------
 // custom keyterms
@@ -99,10 +95,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     // case CTL_A:
     case ALT_D:
     case ALT_K:
-    case ALT_UP:
     case GUI_S:
     case GUI_L:
-    case GUI_RT:
       return TAPPING_TERM + 50;
 
     default:
@@ -116,44 +110,56 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [_BASE] = LAYOUT_universal(
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     KC_Q     , KC_W     , KC_E     , KC_R     , KC_T      ,                           KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
-    CTL_A    , GUI_S    , ALT_D    , SFT_J    , KC_G      ,                           KC_H     , SFT_J    , ALT_K    , GUI_L    , CTLSCN   ,
-    SFT_Z    , KC_X     , KC_C     , LFT_V    , KC_B      ,                           KC_N     , KC_M     , KC_COMMA , KC_DOT   , SFTSLS   ,
-    BALL     , XXXXXXX  , XXXXXXX  , GUIESC   , MN_EN     , S_SPC    ,     S_ENT    , MN_JP    , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_TAB
+    CTL_A    , GUI_S    , ALT_D    , SFT_F    , KC_G      ,                           KC_H     , SFT_J    , ALT_K    , GUI_L    , CTLSCN   ,
+    KC_Z     , KC_X     , KC_C     , KC_V     , KC_B      ,                           KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
+    BALL     , TG(NUMS) , XXXXXXX  , GUIESC   , MN_EN     , S_SPC    ,     S_ENT    , MN_JP    , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_TAB
   ),
 
   [_LEFT] = LAYOUT_universal(
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     KC_1     , KC_2     , KC_3     , KC_4     , KC_5      ,                           KC_6     , KC_7     , KC_8     , KC_9     ,  KC_0     ,
-    CTLTAB   , KC_LGUI  , ALTLBRC  , SFTRBRC  , KC_BSLS   ,                           KC_LEFT  , SFT_DN   , ALT_UP   , GUI_RT   ,  CTLQUOT  ,
-    KC_LSFT  , XXXXXXX  , KC_LCBR  , KC_RBRC  , KC_PIPE   ,                           KC_EQL   , KC_MINS  , KC_LT    , KC_GT    ,  KC_QUES  ,
+    OSM_CTL  , OSM_GUI  , OSM_ALT  , OSM_SFT  , KC_BSLS   ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RIGHT ,  KC_QUOT  ,
+    XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_PIPE   ,                           KC_EQL   , KC_MINS  , KC_LT    , KC_GT    ,  KC_QUES  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     _______  , _______  , _______  , _______  , _______   , _______  ,     S_BS     , EXTMINS  , DEL      , XXXXXXX  , XXXXXXX  ,  XXXXXXX
   ),
 
   [_RIGHT] = LAYOUT_universal(
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     KC_1     , KC_2     , KC_3     , KC_4     , KC_5      ,                           KC_6     , KC_7     , KC_8     , KC_9     ,  KC_0     ,
-    KC_GRV   , XXXXXXX  , KC_LBRC  , KC_RBRC  , KC_BSLS   ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RGHT  ,  KC_QUOT  ,
-    KC_TILD  , XXXXXXX  , KC_LCBR  , KC_RCBR  , KC_PIPE   ,                           XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,  KC_SLSH  ,
+    KC_GRV   , XXXXXXX  , KC_LBRC  , KC_RBRC  , KC_BSLS   ,                           XXXXXXX  , OSM_SFT  , OSM_ALT  , OSM_GUI  ,  OSM_CTL  ,
+    KC_TILD  , XXXXXXX  , KC_LCBR  , KC_RCBR  , KC_PIPE   ,                           XXXXXXX  , JP       , XXXXXXX  , XXXXXXX  ,  KC_SLSH  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , EXT_0     , XXXXXXX  ,     _______  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,  XXXXXXX
   ),
 
   [_EXTRA] = LAYOUT_universal(
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5     ,                           KC_F6    , KC_F7    , KC_F8    , KC_F9    ,  KC_F10   ,
     MAC_PRSC , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX   ,                           KC_HOME  , KC_PGDN  , KC_PGUP  , KC_END   ,  KC_PSCR  ,
-    KC_CAPS  , XXXXXXX  , EE_CLR   , XXXXXXX  , QK_BOOT   ,                           KC_F11   , KC_F12   , KC_MENU  , KC_APP   ,  XXXXXXX  ,
-    XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX   , XXXXXXX  ,     XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,  XXXXXXX
+    KC_CAPS  , XXXXXXX  , QK_RBT   , EE_CLR   , QK_BOOT   ,                           KC_F11   , KC_F12   , KC_MENU  , KC_APP   ,  XXXXXXX  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
+    XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , TO_BASE   , XXXXXXX  ,     XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,  XXXXXXX
   ),
 
   [_NUMS] = LAYOUT_universal(
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     RGB_TOG  , _______  , DT_UP    , DT_DOWN  ,  DT_PRNT  ,                           _______  , _______  , _______  , _______  , _______ ,
     _______  , _______  , _______  , _______  ,  SCRL_DVI ,                           _______  , _______  , _______  , _______  , RGB_M_TW ,
     _______  , _______  , _______  , _______  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     _______  , _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______  , _______
   ),
 
   [_LBALL] = LAYOUT_universal(
-    _______  , _______  , KC_WH_U  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
-    _______  , KC_BTN2  , KC_WH_D  , KC_BTN1  ,  _______  ,                           KC_BTN4  , KC_BTN1  , KC_BTN2  , KC_BTN5  ,  _______  ,
-    _______  , _______  , _______  , _______  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
+    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______  ,  _______  ,
+    _______  , KC_BTN4  , KC_BTN2  , KC_BTN1  ,  KC_BTN5  ,                           KC_WH_L  , KC_WH_D  , KC_WH_U  , KC_WH_R  ,  _______  ,
+    _______  , _______  , KC_BTN4  , KC_BTN5  ,  SCRL_DVD ,                           CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE  ,
+    //|---------------------------------------------------.                         ,------------------------------------------------------.
     _______  , _______  , _______  , _______  ,  MY_SCRL  , _______  ,     _______  , _______  , _______  , _______  , _______  ,  _______
   ),
 

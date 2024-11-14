@@ -98,10 +98,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case GUI_S:
     case GUI_L:
     case GUI_RT:
-    case OSM_SFT:
-    case OSM_CTL:
-    case OSM_ALT:
-    case OSM_GUI:
+    // case OSM_SFT:
+    // case OSM_CTL:
+    // case OSM_ALT:
+    // case OSM_GUI:
       return TAPPING_TERM + 50;
 
     default:
