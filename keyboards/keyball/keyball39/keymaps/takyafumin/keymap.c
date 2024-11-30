@@ -127,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     OSM_CTL  , OSM_GUI  , OSM_ALT  , OSM_SFT  , KC_BSLS   ,                           KC_LEFT  , KC_DOWN  , KC_UP    , KC_RIGHT ,  KC_QUOT  ,
     XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_PIPE   ,                           KC_EQL   , KC_MINS  , KC_LT    , KC_GT    ,  KC_QUES  ,
     //|---------------------------------------------------.                         ,------------------------------------------------------.
-    _______  , _______  , _______  , _______  , _______   , _______  ,     S_BS     , EXTMINS  , DEL      , XXXXXXX  , XXXXXXX  ,  XXXXXXX
+    _______  , _______  , _______  , _______  , _______   , _______  ,     S_BS     , EXTMINS  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,  DEL
   ),
 
   [_RIGHT] = LAYOUT_universal(

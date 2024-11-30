@@ -43,36 +43,65 @@ enum custom_keycodes {
 #define EN       KC_LNG2
 
 // modifier
-#define CTLTAB   RCTL_T(TAB)
-#define GUITAB   RGUI_T(TAB)
-#define GUIESC   LGUI_T(KC_ESC)
 #define S_SPC    LSFT_T(SPC)
 #define S_ENT    LSFT_T(ENT)
 #define S_BS     LSFT_T(BS)
+#define GUIESC   LGUI_T(KC_ESC)
+#define GUITAB   RGUI_T(TAB)
 // left home mods key
-#define CTL_A    LCTL_T(KC_A)
+#define SFT_F    LSFT_T(KC_F)
 #define ALT_D    RALT_T(KC_D)
 #define GUI_S    LGUI_T(KC_S)
-#define SFT_Z    LSFT_T(KC_Z)
-#define GUIQUIT  RGUI_T(KC_QUOT)
-#define ALTLBRC  RALT_T(KC_LBRC)
+#define CTL_A    LCTL_T(KC_A)
 // right home mods key
-#define CTLSCN   RCTL_T(KC_SCLN)
+#define SFT_J    LSFT_T(KC_J)
 #define ALT_K    RALT_T(KC_K)
 #define GUI_L    RGUI_T(KC_L)
-#define SFTSLS   RSFT_T(KC_SLSH)
-#define CTLQUOT  RCTL_T(KC_QUOT)
+#define SFT_DN   LSFT_T(KC_DOWN)
+#define ALT_UP   RALT_T(KC_UP)
+#define GUI_RT   LGUI_T(KC_RIGHT)
+#define CTLSCN   RCTL_T(KC_SCLN)
 
 // Layer
 #define LEFT     MO(_LEFT)
 #define RIGHT    MO(_RIGHT)
 #define NUMS     MO(_NUMS)
-// #define LT_EN    LT(_LEFT , EN)
-// #define RT_JP    LT(_RIGHT, JP)
+#define L_EN     LT(_LEFT, EN)
+#define L_JP     LT(_RIGHT, JP)
 #define EXTENT   LT(_EXTRA, KC_ENT)
 #define EXT_0    LT(_EXTRA, KC_0)
-#define L1_F     LT(_LEFT , KC_F)
-#define L1_J     LT(_LEFT , KC_J)
+
+// OSM/OSL
+#define TO_BASE  TO(_BASE)
+#define TO_EXT   TO(_EXTRA)
+#define OSM_SFT  OSM(MOD_LSFT)
+#define OSM_CTL  OSM(MOD_LCTL)
+#define OSM_ALT  OSM(MOD_LALT)
+#define OSM_GUI  OSM(MOD_LGUI)
+
+// --------------------
+// custom keyterms
+// --------------------
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+
+    // case CTL_A:
+    case ALT_D:
+    case ALT_K:
+    case ALT_UP:
+    case GUI_S:
+    case GUI_L:
+    case GUI_RT:
+    // case OSM_SFT:
+    // case OSM_CTL:
+    // case OSM_ALT:
+    // case OSM_GUI:
+      return TAPPING_TERM + 50;
+
+    default:
+      return TAPPING_TERM;
+  }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_split_3x6_3_2(
@@ -81,19 +110,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                     |--------+---------+--------+---------+--------+--------|
         XXXXXXX, CTL_A  , GUI_S  , ALT_D  , L1_F   , KC_G   ,                       KC_H   , L1_J    , ALT_K  , GUI_L   , CTLSCN , XXXXXXX,
     //|--------+--------+--------+--------+--------+--------|                     |--------+---------+--------+---------+--------+--------|
-        XXXXXXX, SFT_Z  , KC_X   , KC_C   , KC_V   , KC_B   ,                       KC_N   , KC_M    , KC_COMM, KC_DOT  , SFTSLS , XXXXXXX,
+        XXXXXXX, SFT_Z  , KC_X   , KC_C   , KC_V   , KC_B   ,                       KC_N   , KC_M    , KC_COMM, KC_DOT  , KC_SLSH, XXXXXXX,
     //`--------+--------+--------+--------+--------+--------/                     \--------+---------+--------+---------+--------+--------'
-                                   GUIESC , L1_EN  , S_SPC  ,                       S_ENT  , L2_JP   , GUITAB 
+                                   GUIESC , L_EN   , S_SPC  ,                       S_ENT  , L_JP    , GUITAB 
     //                          `+--------+--------+--------'                     `--------+---------+--------+'
     ),
 
     [_LEFT] = LAYOUT_split_3x6_3_2(
     //,--------+--------+--------+--------+--------+--------.                     ,--------+--------+--------+--------+--------+--------.
-        _______, KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC,                       KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, QK_RBT ,
+        _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                       KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , _______,
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-        _______, CTLTAB , GUIQUIT, ALTLBRC, KC_RBRC, KC_BSLS,                       KC_LEFT, KC_DOWN, KC_UP  ,KC_RIGHT, KC_COLN, EE_CLR ,
+        _______, OSM_CTL, OSM_GUI, OSM_ALT, OSM_SFT, KC_BSLS,                       KC_LEFT, KC_DOWN, KC_UP  ,KC_RIGHT, KC_COLN, _______,
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-        _______, KC_LSFT, KC_DQT , KC_LCBR, KC_RCBR, KC_PIPE,                       KC_EQL , KC_MINS, KC_LT  , KC_GT  , KC_QUES, QK_BOOT,
+        _______, XXXXXXX, XXXXXXX, XXXXXXX, EN     , KC_PIPE,                       KC_EQL , KC_MINS, KC_LT  , KC_GT  , KC_QUES, _______,
     //`--------+--------+--------+--------+--------+--------/                     \--------+--------+--------+--------+--------+--------'
                                   _______, _______,  _______,                        S_BS   , EXTENT , DEL
     //                          `+--------+--------+--------'                      `--------+-------+--------+'
@@ -103,11 +132,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //,--------+--------+--------+--------+--------+--------.                     ,--------+--------+--------+--------+--------+--------.
         _______, KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,                       KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , _______,
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-        _______, KC_GRV , KC_QUOT, KC_LBRC, KC_RBRC, KC_BSLS,                       XXXXXXX, XXXXXXX, KC_RALT, KC_RGUI, CTLQUOT, _______,
+        _______, KC_GRV , XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS,                       KC_LEFT, SFT_DN , ALT_UP , GUI_RT , OSM_CTL, _______,
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-        _______, KC_TILD, KC_DQT , KC_LCBR, KC_RCBR, KC_PIPE,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT, _______,
+        _______, KC_TILD, XXXXXXX, KC_LCBR, KC_RCBR, KC_PIPE,                       XXXXXXX, JP     , XXXXXXX, XXXXXXX, XXXXXXX, _______,
     //`--------+--------+--------+--------+--------+--------/                     \--------+--------+--------+--------+--------+--------'
-                                  _______ , EXT_0 ,  KC_LSFT,                       _______, _______, _______
+                                   KC_TAB , EXT_0 ,  KC_LSFT,                       _______, _______, _______
     //                          `+--------+--------+--------'                     `--------+--------+--------+'
     ),
 
@@ -117,9 +146,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
         _______,MAC_PRSC, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_HOME, KC_PGDN, KC_PGUP, KC_END , KC_PSCR, _______,
     //|--------+--------+--------+--------+--------+--------|                     |--------+--------+--------+--------+--------+--------|
-        _______, KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_F11 , KC_F12 , HOTKEY , XXXXXXX, KC_MENU, _______,
+        _______, KC_CAPS, XXXXXXX, QK_RBT , EE_CLR , QK_BOOT,                       KC_F11 , KC_F12 , HOTKEY , XXXXXXX, KC_MENU, _______,
     //`--------+--------+--------+--------+--------+--------/                     \--------+--------+--------+--------+--------+--------'
-                                  _______, _______, _______,                        _______, _______, _______
+                                  _______ , _______, _______,                       _______, _______, _______
     //                          `+--------+--------+--------'                     `--------+--------+--------+'
     ),
 };
@@ -148,67 +177,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool lctrl = keyboard_report->mods & MOD_BIT(KC_LCTL);
 
     switch (keycode) {
-        case L1_EN:
-            if (record->event.pressed) {
-                layer_on(_LEFT);
-                l2_state.tap_timer = timer_read();
-                // if (l2_state.tap_count > 0) {
-                //     // 連続タップ後のホールドが開始された
-                //     l2_state.is_tap_hold = true;
-                // } else {
-                //     // シングルタップのためのタイマーを開始
-                //     l2_state.tap_timer = timer_read();
-                // }
-            } else {
-                // キーが離されたとき
-                layer_off(_LEFT);
-                if (timer_elapsed(l2_state.tap_timer) < TAPPING_TERM) {
-                    tap_code(EN);
-                }
-                // if (l2_state.is_tap_hold) {
-                //     l2_state.is_tap_hold = false;
-                // } else if (timer_elapsed(l2_state.tap_timer) < TAPPING_TERM) {
-                //     tap_code(EN);
-                //     l2_state.tap_count++;
-                //     wait_ms(50); // 200ms以内に連続タップがなければタップカウントをリセット
-                //     l2_state.tap_count = 0;
-                // } else {
-                //     l2_state.is_tap_hold = true;
-                // }
-            }
-            return false; // このキーのデフォルトの動作を無効化
-
-        case L2_JP:
-            if (record->event.pressed) {
-                layer_on(_RIGHT);
-                l1_state.tap_timer = timer_read();
-                // キーが押されたとき
-                // if (l1_state.tap_count > 0) {
-                //     // 連続タップ後のホールドが開始された
-                //     l1_state.is_tap_hold = true;
-                // } else {
-                //     // シングルタップのためのタイマーを開始
-                //     l1_state.tap_timer = timer_read();
-                // }
-            } else {
-                // キーが離されたとき
-                layer_off(_RIGHT);
-                if (timer_elapsed(l1_state.tap_timer) < TAPPING_TERM) {
-                    tap_code(JP);
-                }
-                // if (l1_state.is_tap_hold) {
-                //     l1_state.is_tap_hold = false;
-                // } else if (timer_elapsed(l1_state.tap_timer) < TAPPING_TERM) {
-                //     tap_code(JP);
-                //     l1_state.tap_count++;
-                //     wait_ms(50); // 200ms以内に連続タップがなければタップカウントをリセット
-                //     l1_state.tap_count = 0;
-                // } else {
-                //     l1_state.is_tap_hold = true;
-                // }
-            }
-            return false; // このキーのデフォルトの動作を無効化
-
 
         // Ctrl + H = Backspace
         case KC_H:
